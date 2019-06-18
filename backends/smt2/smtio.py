@@ -106,7 +106,7 @@ class SmtModInfo:
 
 
 class SmtIo:
-    def __init__(self, opts=None):
+    def __init__(self, opts=None, logs=None):
         global solvers_index
 
         self.logic = None
@@ -146,6 +146,12 @@ class SmtIo:
             self.noincr = False
             self.info_stmts = list()
             self.nocomments = False
+
+        if logs is None:
+            self.smtlog = SmtLog()
+        
+        else:
+            self.smtlog = logs
 
         self.start_time = time()
 
@@ -347,6 +353,7 @@ class SmtIo:
         self.p_thread = None
 
     def write(self, stmt, unroll=True):
+        self.smtlog.write_line(stmt) # Write log
         if stmt.startswith(";"):
             self.info(stmt)
             if not self.setup_done:

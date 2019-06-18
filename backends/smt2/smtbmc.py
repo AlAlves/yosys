@@ -236,7 +236,7 @@ for o, a in opts:
     elif so.handle(o, a):
         pass
     elif o == "--dump-log-lines":
-        sl.write_log = True
+        sl.toggle_on_log()
         if(len(a)>0):
             sl.filename = a
     else:
@@ -390,7 +390,7 @@ def get_constr_expr(db, state, final=False, getvalues=False):
     return "(and %s)" % " ".join(expr_list)
 
 
-smt = SmtIo(opts=so)
+smt = SmtIo(opts=so, logs=sl)
 
 if noinfo and vcdfile is None and vlogtbfile is None and outconstr is None:
     smt.produce_models = False
