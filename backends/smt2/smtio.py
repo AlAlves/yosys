@@ -25,6 +25,7 @@ from select import select
 from time import time
 from queue import Queue, Empty
 from threading import Thread
+from smtlog import SmtLog
 
 
 # This is needed so that the recursive SMT2 S-expression parser

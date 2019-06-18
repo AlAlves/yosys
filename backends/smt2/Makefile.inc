@@ -28,5 +28,6 @@ yosys-smtbmc: backends/smt2/smtbmc.py
 endif
 
 $(eval $(call add_share_file,share/python3,backends/smt2/smtio.py))
+$(eval $(call add_share_file,share/python3,backends/smt2/smtlog.py))
 endif
 endif

@@ -21,6 +21,7 @@ import os, sys, getopt, re
 ##yosys-sys-path##
 from smtio import SmtIo, SmtOpts, MkVcd
 from collections import defaultdict
+from smtlog import SmtLog
 
 got_topt = False
 skip_steps = 0
@@ -50,7 +51,7 @@ smtcinit = False
 smtctop = None
 noinit = False
 so = SmtOpts()
-
+sl = SmtLog()
 
 def usage():
     print("""
@@ -150,6 +151,9 @@ yosys-smtbmc [options] <yosys_smt2_output>
         add <num_steps> time steps at the end of the trace
         when creating a counter example (this additional time
         steps will still be constrained by assumptions)
+    
+    --dump-log-lines <log_filename>
+        write smt lines sent to solver.
 """ + so.helpmsg())
     sys.exit(1)
 
@@ -158,7 +162,7 @@ try:
     opts, args = getopt.getopt(sys.argv[1:], so.shortopts + "t:igcm:", so.longopts +
             ["final-only", "assume-skipped=", "smtc=", "cex=", "aig=", "aig-noheader", "btorwit=", "presat",
              "dump-vcd=", "dump-vlogtb=", "vlogtb-top=", "dump-smtc=", "dump-all", "noinfo", "append=",
-             "smtc-init", "smtc-top=", "noinit"])
+             "smtc-init", "smtc-top=", "noinit", "dump-log-lines="])
 except:
     usage()
 
@@ -231,6 +235,10 @@ for o, a in opts:
         topmod = a
     elif so.handle(o, a):
         pass
+    elif o == "--dump-log-lines":
+        sl.write_log = True
+        if(len(a)>0):
+            sl.filename = a
     else:
         usage()
 
